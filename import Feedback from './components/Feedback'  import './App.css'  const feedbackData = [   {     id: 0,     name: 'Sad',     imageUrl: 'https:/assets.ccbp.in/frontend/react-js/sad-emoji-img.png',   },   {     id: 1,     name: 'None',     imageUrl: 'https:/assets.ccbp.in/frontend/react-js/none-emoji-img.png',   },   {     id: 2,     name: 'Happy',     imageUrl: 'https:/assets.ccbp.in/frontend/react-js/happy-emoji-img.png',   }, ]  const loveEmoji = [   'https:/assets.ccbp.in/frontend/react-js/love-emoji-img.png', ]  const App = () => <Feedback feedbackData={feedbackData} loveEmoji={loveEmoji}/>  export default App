@@ -1,0 +1,98 @@
+import Feedback from './components/Feedback'
+
+import './App.css'
+
+const feedbackData = [
+  {
+    id: 0,
+    name: 'Sad',
+    imageUrl: 'https://assets.ccbp.in/frontend/react-js/sad-emoji-img.png',
+  },
+  {
+    id: 1,
+    name: 'None',
+    imageUrl: 'https://assets.ccbp.in/frontend/react-js/none-emoji-img.png',
+  },
+  {
+    id: 2,
+    name: 'Happy',
+    imageUrl: 'https://assets.ccbp.in/frontend/react-js/happy-emoji-img.png',
+  },
+]
+
+const loveEmoji = [
+  'https://assets.ccbp.in/frontend/react-js/love-emoji-img.png',
+]
+
+const App = () => <Feedback feedbackData={feedbackData} loveEmoji={loveEmoji} />
+
+export default App
+
+
+****feedback/index.js****
+import {Component} from 'react'
+
+import './index.css'
+
+class Feedback extends Component {
+  state = {
+    isFeedbackSelected: false,
+  }
+
+  setIsFeedbackSelected = () => this.setState({isFeedbackSelected: true})
+
+  renderFeedbackQuestion = () => {
+    const {feedbackData} = this.props
+    console.log(feedbackData[0])
+    return (
+      <div className="feedback-question-container">
+        <h1 className="feedback-title">
+          How satisfied are you with our customer support performance?
+        </h1>
+        <ul className="emojis-list-container">
+          {feedbackData.map(emoji => (
+            <li
+              key={emoji.id}
+              className="list-item-container"
+              onClick={this.setIsFeedbackSelected}
+            >
+              <img src={emoji.imageUrl} alt={emoji.name} className="emoji" />
+              <p className="emoji-title">{emoji.name}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  renderFeedbackSummary = () => {
+    const {loveEmoji} = this.props
+    const imgUrl = loveEmoji[0]
+
+    return (
+      <div className="feedback-summary-container">
+        <img src={imgUrl} alt="loveEmoji" className="love-emoji" />
+        <h1 className="thank-you-text">Thank You!</h1>
+        <p className="feedback-summary">
+          We’ll use your feedback to improve our customer support performance.
+        </p>
+      </div>
+    )
+  }
+
+  render() {
+    const {isFeedbackSelected} = this.state
+
+    return (
+      <div className="app-container">
+        <div className="feedback-card">
+          {isFeedbackSelected
+            ? this.renderFeedbackSummary()
+            : this.renderFeedbackQuestion()}
+        </div>
+      </div>
+    )
+  }
+}
+
+export default Feedback
